@@ -17,7 +17,7 @@ public class GameMousesVSCats extends Game {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 1, 1, 1); //цвет очищения
+		Gdx.gl.glClearColor(1, 0, 1, 1); //цвет очищения
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); //само очищение
 		batch.begin();
 		batch.end();
