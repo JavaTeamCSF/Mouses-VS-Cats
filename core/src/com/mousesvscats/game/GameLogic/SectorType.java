@@ -1,4 +1,4 @@
-package com.mousesvscats.game.GameLogic.Field;
+package com.mousesvscats.game.GameLogic;
 
 /**
  * Created by User on 09.12.2014.

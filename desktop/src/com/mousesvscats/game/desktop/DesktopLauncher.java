@@ -1,14 +1,17 @@
 package com.mousesvscats.game.desktop;
 
+import com.mousesvscats.game.GameLogic.GameObject;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.mousesvscats.game.GameMousesVSCats;
+import com.mousesvscats.game.GameLogic.GameClass;
+import com.mousesvscats.game.GameLogic.Labyrinth;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        config.height = 600;
-        config.width = 800;
-		new LwjglApplication(new GameMousesVSCats(), config);
+        config.title="CatsVsMouses";
+        config.width=Labyrinth.LABYRINCH_WIDTH* GameObject.Size;
+        config.height=Labyrinth.LABYRINCH_HEIGHT*GameObject.Size;
+		new LwjglApplication(new GameClass(), config);
 	}
 }
