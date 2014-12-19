@@ -1,5 +1,8 @@
 package com.mousesvscats.game.GameLogic;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -33,25 +36,31 @@ public class Labyrinth {
                             sectors[j][i].setX(GameObject.Size*j);//копипаст
                             sectors[j][i].setY(GameObject.Size*i);
                             sectors[j][i].setAccessible(true);
-
+                            sectors[j][i].setTexture(new Texture(Gdx.files.internal("empty.png")));
                             break;
                         case 1:
                             sectors[j][i] = new Sector(SectorType.WALL); //если элемент матрицы = 1, то сектор - стена
                             sectors[j][i].setX(GameObject.Size*j);
                             sectors[j][i].setY(GameObject.Size*i);
                             sectors[j][i].setAccessible(false);
+                            sectors[j][i].setTexture(new Texture(Gdx.files.internal("wall.png")));
                             break;
                         case 2:
                             sectors[j][i] = new Sector(SectorType.CLOSED_DOOR); //если элемент матрицы = 2, то сектор - дверь (выход)
                             sectors[j][i].setX(GameObject.Size*j);
                             sectors[j][i].setY(GameObject.Size*i);
                             sectors[j][i].setAccessible(false);
+                            if (i == 0 || i == LABYRINCH_WIDTH - 1)
+                                sectors[j][i].setTexture(new Texture(Gdx.files.internal("door_gor.png"))); //если на левой/правой границе лабиринта
+                            if (j == 0 || j == LABYRINCH_HEIGHT - 1)
+                                sectors[j][i].setTexture(new Texture(Gdx.files.internal("door_ver.png"))); //если на верхней/нижней границе лабиринта
                             break;
                         default:
                             sectors[j][i] = new Sector(SectorType.EMPTY);
                             sectors[j][i].setX(GameObject.Size*j);
                             sectors[j][i].setY(GameObject.Size*i);
                             sectors[j][i].setAccessible(true);
+                            sectors[j][i].setTexture(new Texture(Gdx.files.internal("empty.png")));
                             break;
                     }
                 }

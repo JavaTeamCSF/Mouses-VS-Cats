@@ -30,10 +30,10 @@ public class GameObject {
         return this.texture;
     }
     public void setTexture(Texture t) {
-        this.texture=t;
+        this.texture = t;
     }
     public void setAccessible(boolean b) {
-        this.accessible=b;
+        this.accessible = b;
     }
     public boolean isAccessible() {
         return this.accessible;

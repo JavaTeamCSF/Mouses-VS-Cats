@@ -3,12 +3,8 @@ package com.mousesvscats.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mousesvscats.game.GameLogic.*;
-
-import java.util.HashMap;
 
 public class GameMousesVSCats extends ApplicationAdapter {
 
@@ -16,19 +12,11 @@ public class GameMousesVSCats extends ApplicationAdapter {
     SpriteBatch batch;
     static final double DELTA_TIME = 0.016; //частота обновления кадров
     private static final int CELL_SIZE = 16;
-    HashMap<SectorType, TextureRegion> textures;
 
     @Override
     public void create () {
         mygame = new GameClass(new Labyrinth("level_1.txt"));
         batch = new SpriteBatch();
-        textures = new HashMap<SectorType, TextureRegion>() {
-            {
-                put(SectorType.EMPTY, new TextureRegion(new Texture(Gdx.files.internal("empty.png"))));
-                put(SectorType.WALL, new TextureRegion(new Texture(Gdx.files.internal("wall.png"))));
-                put(SectorType.CLOSED_DOOR, new TextureRegion(new Texture(Gdx.files.internal("door_ver.png"))));
-            }
-        };
     }
 
     @Override
@@ -37,7 +25,7 @@ public class GameMousesVSCats extends ApplicationAdapter {
 
         for (int i = 0; i<mygame.getLevel().getSectors().length; i++)
             for (int j = 0; j < mygame.getLevel().getSectors()[0].length; j++) {
-                batch.draw(textures.get(mygame.getLevel().getSectors()[j][i].getSectorType()),
+                batch.draw(mygame.getLevel().getSectors()[j][i].getTexture(),
                         j*CELL_SIZE,
                         i*CELL_SIZE,
                         CELL_SIZE, CELL_SIZE);
