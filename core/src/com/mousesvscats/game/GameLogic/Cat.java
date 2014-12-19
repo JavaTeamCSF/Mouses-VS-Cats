@@ -1,7 +1,6 @@
 package com.mousesvscats.game.GameLogic;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Rectangle;
 
 public class Cat extends Creature {
     protected Instance instance;
