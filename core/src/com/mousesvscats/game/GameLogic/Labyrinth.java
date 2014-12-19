@@ -1,9 +1,9 @@
 package com.mousesvscats.game.GameLogic;
 
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.mousesvscats.game.GameLogic.items.*;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -34,34 +34,37 @@ public class Labyrinth {
 
             String[] elements = new String[LABYRINTH_HEIGHT];
             int temp;
-            for (int i = LABYRINTH_HEIGHT -1; i>=0; i--) {
+            for (int i = LABYRINTH_HEIGHT-1; i>=0; i--) {
                 elements[i] = reader.readLine();
-                for (int j = 0; j < LABYRINTH_HEIGHT; j++) {
+                for (int j = 0; j < LABYRINTH_WIDTH; j++) {
                     temp = Character.getNumericValue(elements[i].charAt(j));
                     switch (temp) {
                         case 0:
                             sectors[j][i] = new Sector(SectorType.EMPTY); //МАГИЯ!! почему-то j и i нужно менять местами
-                            sectors[j][i].setX(GameObject.Size*j);//копипаст
-                            sectors[j][i].setY(GameObject.Size*i);
+                            sectors[j][i].setX(GameObject.Size * j);//копипаст
+                            sectors[j][i].setY(GameObject.Size * i);
                             sectors[j][i].setAccessible(true);
-
                             break;
                         case 1:
                             sectors[j][i] = new Sector(SectorType.WALL); //если элемент матрицы = 1, то сектор - стена
-                            sectors[j][i].setX(GameObject.Size*j);
-                            sectors[j][i].setY(GameObject.Size*i);
+                            sectors[j][i].setX(GameObject.Size * j);
+                            sectors[j][i].setY(GameObject.Size * i);
                             sectors[j][i].setAccessible(false);
                             break;
                         case 2:
-                            sectors[j][i] = new Sector(SectorType.CLOSED_DOOR); //если элемент матрицы = 2, то сектор - дверь (выход)
-                            sectors[j][i].setX(GameObject.Size*j);
-                            sectors[j][i].setY(GameObject.Size*i);
+                            if (i == 0 || i == LABYRINTH_WIDTH - 1) {
+                                sectors[j][i] = new Sector(SectorType.CLOSED_GOR_DOOR);  //если на левой/правой границе лабиринта
+                            }
+                            else if (j == 0 || j == LABYRINTH_HEIGHT - 1)
+                                sectors[j][i] = new Sector(SectorType.CLOSED_VER_DOOR);  //если на верхней/нижней границе лабиринта
+                            sectors[j][i].setX(GameObject.Size * j);
+                            sectors[j][i].setY(GameObject.Size * i);
                             sectors[j][i].setAccessible(false);
                             break;
                         default:
                             sectors[j][i] = new Sector(SectorType.EMPTY);
-                            sectors[j][i].setX(GameObject.Size*j);
-                            sectors[j][i].setY(GameObject.Size*i);
+                            sectors[j][i].setX(GameObject.Size * j);
+                            sectors[j][i].setY(GameObject.Size * i);
                             sectors[j][i].setAccessible(true);
                             break;
                     }
@@ -132,7 +135,7 @@ public class Labyrinth {
                 break;
 
             for (int i = 0; i < LABYRINTH_HEIGHT; i++) {
-                if (sectors[i][j].getSectorType() == SectorType.CLOSED_DOOR) {
+                if (sectors[i][j].getSectorType() == SectorType.CLOSED_GOR_DOOR || sectors[i][j].getSectorType() == SectorType.CLOSED_VER_DOOR) {
                     sectors[i][j].setSectorType(SectorType.OPENED_DOOR);
                     found = true;
                     break;

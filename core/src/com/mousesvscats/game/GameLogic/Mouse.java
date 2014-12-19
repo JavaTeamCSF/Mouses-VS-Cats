@@ -5,9 +5,20 @@ package com.mousesvscats.game.GameLogic;
  */
 
 import com.badlogic.gdx.graphics.Texture;
+import com.mousesvscats.game.GameLogic.items.Weapon;
 
 public class Mouse extends Creature {
     public boolean isDead;
+
+    private Weapon weapon;
+
+    public Weapon getWeapon() {
+        return weapon;
+    }
+
+    public void setWeapon(Weapon weapon) {
+        this.weapon = weapon;
+    }
 
     public Mouse(int x, int y, int speed) {
         texture_down = new Texture("mousedown.png");

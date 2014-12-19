@@ -1,6 +1,6 @@
 package com.mousesvscats.game.GameLogic.items;
 
-import com.mousesvscats.game.GameLogic.Cat;
+import com.mousesvscats.game.GameLogic.Mouse;
 import com.mousesvscats.game.GameLogic.Labyrinth;
 
 /**
@@ -8,7 +8,7 @@ import com.mousesvscats.game.GameLogic.Labyrinth;
  */
 public class Cheese extends Item {
     @Override
-    public void taken(Labyrinth labyrinth, Cat cat) {
+    public void taken(Labyrinth labyrinth, Mouse mouse) {
         labyrinth.collectCheese();
     }
 }
