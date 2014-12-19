@@ -7,28 +7,44 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mousesvscats.game.GameLogic.*;
+import com.mousesvscats.game.GameLogic.items.*;
 
 import java.util.HashMap;
 
 public class GameMousesVSCats extends ApplicationAdapter {
 
     private GameClass mygame;
+
     SpriteBatch batch;
     static final double DELTA_TIME = 0.016; //частота обновления кадров
     private static final int CELL_SIZE = 16;
     HashMap<SectorType, TextureRegion> textures;
 
+    TextureRegion cheese;
+    TextureRegion weaponSlower;
+    TextureRegion weaponDistractor;
+    TextureRegion weaponFreezer;
+    TextureRegion key;
+
     @Override
     public void create () {
-        mygame = new GameClass(new Labyrinth("level_1.txt"));
+        mygame = new GameClass(new Labyrinth("core/assets/level_1.txt"));
+        mygame.getLevel().generateItems();
         batch = new SpriteBatch();
         textures = new HashMap<SectorType, TextureRegion>() {
             {
-                put(SectorType.EMPTY, new TextureRegion(new Texture(Gdx.files.internal("empty.png"))));
-                put(SectorType.WALL, new TextureRegion(new Texture(Gdx.files.internal("wall.png"))));
-                put(SectorType.CLOSED_DOOR, new TextureRegion(new Texture(Gdx.files.internal("door_ver.png"))));
+                put(SectorType.EMPTY, new TextureRegion(new Texture(Gdx.files.internal("core/assets/empty.png"))));
+                put(SectorType.WALL, new TextureRegion(new Texture(Gdx.files.internal("core/assets/wall.png"))));
+                put(SectorType.CLOSED_DOOR, new TextureRegion(new Texture(Gdx.files.internal("core/assets/door_ver.png"))));
             }
         };
+
+        cheese = new TextureRegion(new Texture(Gdx.files.internal("core/assets/cheese.png")));
+
+        weaponSlower = new TextureRegion(new Texture(Gdx.files.internal("core/assets/slow.gif")));
+        weaponDistractor = new TextureRegion(new Texture(Gdx.files.internal("core/assets/distract.png")));
+        weaponFreezer = new TextureRegion(new Texture(Gdx.files.internal("core/assets/freezer.jpg")));
+        key = new TextureRegion(new Texture(Gdx.files.internal("core/assets/key.png")));
     }
 
     @Override
@@ -41,6 +57,37 @@ public class GameMousesVSCats extends ApplicationAdapter {
                         j*CELL_SIZE,
                         i*CELL_SIZE,
                         CELL_SIZE, CELL_SIZE);
+
+                if (mygame.getLevel().getSectors()[j][i].getItem() instanceof Cheese) {
+                    batch.draw(cheese,
+                            j*CELL_SIZE,
+                            i*CELL_SIZE,
+                            CELL_SIZE, CELL_SIZE);
+                }
+                else if (mygame.getLevel().getSectors()[j][i].getItem() instanceof Key) {
+                    batch.draw(key,
+                            j*CELL_SIZE,
+                            i*CELL_SIZE,
+                            CELL_SIZE, CELL_SIZE);
+                }
+                else if (mygame.getLevel().getSectors()[j][i].getItem() instanceof DistractGun) {
+                    batch.draw(weaponDistractor,
+                            j*CELL_SIZE,
+                            i*CELL_SIZE,
+                            CELL_SIZE, CELL_SIZE);
+                }
+                else if (mygame.getLevel().getSectors()[j][i].getItem() instanceof FreezerGun) {
+                    batch.draw(weaponFreezer,
+                            j*CELL_SIZE,
+                            i*CELL_SIZE,
+                            CELL_SIZE, CELL_SIZE);
+                }
+                else if (mygame.getLevel().getSectors()[j][i].getItem() instanceof SlowGun) {
+                    batch.draw(weaponSlower,
+                            j*CELL_SIZE,
+                            i*CELL_SIZE,
+                            CELL_SIZE, CELL_SIZE);
+                }
             }
         batch.draw(mygame.getCat().getTexture(),mygame.getCat().getX(),mygame.getCat().getY());
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
