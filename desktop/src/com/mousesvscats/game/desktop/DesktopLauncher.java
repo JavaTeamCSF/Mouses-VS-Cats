@@ -10,8 +10,8 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.title="CatsVsMouses";
-        config.width=Labyrinth.LABYRINCH_WIDTH* GameObject.Size;
-        config.height=Labyrinth.LABYRINCH_HEIGHT*GameObject.Size;
+        config.width=Labyrinth.LABYRINTH_WIDTH * GameObject.Size;
+        config.height=Labyrinth.LABYRINTH_HEIGHT *GameObject.Size;
 		new LwjglApplication(new GameClass(), config);
 	}
 }

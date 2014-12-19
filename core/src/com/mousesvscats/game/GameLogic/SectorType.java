@@ -7,5 +7,5 @@ public enum SectorType {
     EMPTY,          //свободная клетка
     WALL,           //стена
     CLOSED_DOOR,    //закрытая дверь
-    OPENED_DOOR;    //открытая дверь
+    OPENED_DOOR     //открытая дверь
 }

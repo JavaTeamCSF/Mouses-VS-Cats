@@ -2,13 +2,11 @@ package com.mousesvscats.game.GameLogic;
 
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
+import com.mousesvscats.game.GameLogic.items.*;
 
-import java.io.*;
 import java.util.HashMap;
 
 
@@ -19,21 +17,40 @@ public class GameClass extends ApplicationAdapter {
     private static final int CELL_SIZE = 16;
     Labyrinth level;
 
+    TextureRegion cheese;
+    TextureRegion weaponFreezer;
+    TextureRegion weaponDistractor;
+    TextureRegion weaponSlower;
+    TextureRegion key;
+
     HashMap<SectorType, TextureRegion> textures;
 
     @Override
     public void create () {
         cat = new Cat(GameObject.Size,GameObject.Size,300);//скорость кошек : 100-медленно, 200 - средне, 300 - быстро
         //здесь спаун кошки происходит в клетку [1][1]
-        level = new Labyrinth("level_1.txt");
+        level = new Labyrinth("core/assets/level_1.txt");
+        cheese = new TextureRegion(new Texture(Gdx.files.internal("core/assets/cheese.png")));
+
+        weaponSlower = new TextureRegion(new Texture(Gdx.files.internal("core/assets/testGun.gif")));
+        weaponDistractor = new TextureRegion(new Texture(Gdx.files.internal("core/assets/redLightSaber.png")));
+        weaponFreezer = new TextureRegion(new Texture(Gdx.files.internal("core/assets/freezer.png")));
+        key = new TextureRegion(new Texture(Gdx.files.internal("core/assets/key.png")));
+
+        level.generateItems();
+
         batch = new SpriteBatch();
         textures = new HashMap<SectorType, TextureRegion>() {
             {
-                put(SectorType.EMPTY, new TextureRegion(new Texture(Gdx.files.internal("empty.png"))));
-                put(SectorType.WALL, new TextureRegion(new Texture(Gdx.files.internal("wall.png"))));
-                put(SectorType.CLOSED_DOOR, new TextureRegion(new Texture(Gdx.files.internal("door_ver.png"))));
+                put(SectorType.EMPTY, new TextureRegion(new Texture(Gdx.files.internal("core/assets/empty.png"))));
+                put(SectorType.WALL, new TextureRegion(new Texture(Gdx.files.internal("core/assets/wall.png"))));
+                put(SectorType.CLOSED_DOOR, new TextureRegion(new Texture(Gdx.files.internal("core/assets/door_ver.png"))));
             }
         };
+    }
+
+    private void createItemsAndCheese() {
+
     }
 
     @Override
@@ -46,6 +63,37 @@ public class GameClass extends ApplicationAdapter {
                         j*CELL_SIZE,
                         i*CELL_SIZE,
                         CELL_SIZE, CELL_SIZE);
+
+                if (level.getSectors()[j][i].getItem() instanceof Cheese) {
+                    batch.draw(cheese,
+                            j*CELL_SIZE,
+                            i*CELL_SIZE,
+                            CELL_SIZE, CELL_SIZE);
+                }
+                else if (level.getSectors()[j][i].getItem() instanceof Key) {
+                    batch.draw(key,
+                            j*CELL_SIZE,
+                            i*CELL_SIZE,
+                            CELL_SIZE, CELL_SIZE);
+                }
+                else if (level.getSectors()[j][i].getItem() instanceof DistractGun) {
+                    batch.draw(weaponDistractor,
+                            j*CELL_SIZE,
+                            i*CELL_SIZE,
+                            CELL_SIZE, CELL_SIZE);
+                }
+                else if (level.getSectors()[j][i].getItem() instanceof FreezerGun) {
+                    batch.draw(weaponFreezer,
+                            j*CELL_SIZE,
+                            i*CELL_SIZE,
+                            CELL_SIZE, CELL_SIZE);
+                }
+                else if (level.getSectors()[j][i].getItem() instanceof SlowGun) {
+                    batch.draw(weaponSlower,
+                            j*CELL_SIZE,
+                            i*CELL_SIZE,
+                            CELL_SIZE, CELL_SIZE);
+                }
             }
         batch.draw(cat.getTexture(),cat.getX(),cat.getY());
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
