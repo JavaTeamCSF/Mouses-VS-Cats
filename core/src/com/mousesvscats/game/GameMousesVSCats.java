@@ -148,7 +148,33 @@ public class GameMousesVSCats extends ApplicationAdapter {
         }
 
         /**отрисовка мыши*/
-        batch.draw(tex_mouse.get(mygame.getMouse().getDirection()), mygame.getMouse().getX(), mygame.getMouse().getY());
+
+        batch.draw(tex_mouse.get(mygame.getMouse().getDirection()),mygame.getMouse().getX(),mygame.getMouse().getY());
+
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            mygame.getMouse().setDirection(Direction.RIGHT);
+            mygame.getMouse().setX(mygame.getMouse().getX() + (int) (mygame.getMouse().getSpeed() * DELTA_TIME));
+            /*Перемещаем перса на некоторое расстояние вправо
+            а затем проверяем, не "наехал" ли он на объект, на который нельзя наезжать
+             getDeltaTime - время, прошедшее после последнего отрисованного кадра*/
+
+        Collision.Collision(mygame.getMouse(), mygame.getLevel());
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            mygame.getMouse().setDirection(Direction.LEFT);
+            mygame.getMouse().setX(mygame.getMouse().getX() - (int) (mygame.getMouse().getSpeed() * DELTA_TIME));
+            Collision.Collision(mygame.getMouse(), mygame.getLevel());
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            mygame.getMouse().setDirection(Direction.UP);
+            mygame.getMouse().setY(mygame.getMouse().getY() + (int) (mygame.getMouse().getSpeed() * DELTA_TIME));
+            Collision.Collision(mygame.getMouse(), mygame.getLevel());
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            mygame.getMouse().setDirection(Direction.DOWN);
+            mygame.getMouse().setY(mygame.getMouse().getY() - (int) (mygame.getMouse().getSpeed() * DELTA_TIME));
+            Collision.Collision(mygame.getMouse(), mygame.getLevel());
+        }
 
         batch.end();
     }
