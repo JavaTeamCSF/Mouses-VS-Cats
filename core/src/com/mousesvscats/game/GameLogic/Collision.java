@@ -130,6 +130,7 @@ public class Collision {
     /*Возвращает true, если залезли куда-либо. Можно позднее модифицировать для сбора бонусов. */
     public static boolean Collision(Cat cat, Labyrinth level) {
         int dx,dx2,dy,dy2;
+        boolean flag=false;
         switch (cat.getDirection()) {
             /*При движении в право мы можем задеть блок либо верхним правым углом, либо нижним правым. Проверяем, залезли ли эти точки на блок.*/
             case RIGHT:
@@ -137,40 +138,57 @@ public class Collision {
                 dx = (cat.getX() + Cat.Size) / GameObject.Size;
                 dy = cat.getY() / GameObject.Size;
                 /*Далее 2 случая:*/
-                if (Overlaps(cat, level, dx, dy)) // Если залезли нижним углом, возвращаем перса назад
+                if (Overlaps(cat, level, dx, dy)) {// Если залезли нижним углом, возвращаем перса назад
+                    flag=true;
                     cat.setX(level.getSectors()[dx][dy2].getX() - Cat.Size);
-                if (Overlaps(cat, level, dx, dy2))// Если залезли верхним углом, возвращаем перса назад
+                }
+                if (Overlaps(cat, level, dx, dy2)) {// Если залезли верхним углом, возвращаем перса назад
+                    flag=true;
                     cat.setX(level.getSectors()[dx][dy].getX() - Cat.Size);
-                return true;
+                }
+                return flag;
             /* В другие стороны - аналогично */
             case DOWN:
                 dx2 = (cat.getX() + Cat.Size) / GameObject.Size;
                 dy = cat.getY() / GameObject.Size;
                 dx = cat.getX() / GameObject.Size;
-                if (Overlaps(cat, level, dx, dy))
+                if (Overlaps(cat, level, dx, dy)) {
+                    flag = true;
                     cat.setY(level.getSectors()[dx][dy].getY() + GameObject.Size);
-                if (Overlaps(cat, level, dx2, dy))
+                }
+                if (Overlaps(cat, level, dx2, dy)) {
+                    flag = true;
                     cat.setY(level.getSectors()[dx2][dy].getY() + GameObject.Size);
-                return true;
+                }
+                return flag;
             case LEFT:
                 dy = cat.getY() / GameObject.Size;
                 dy2 = (cat.getY() + Cat.Size) / GameObject.Size;
                 dx = cat.getX() / GameObject.Size;
-                if (Overlaps(cat, level, dx, dy2))
+                if (Overlaps(cat, level, dx, dy2)) {
+                    flag = true;
                     cat.setX(level.getSectors()[dx][dy2].getX() + GameObject.Size);
-                if (Overlaps(cat, level, dx, dy))
+                }
+                if (Overlaps(cat, level, dx, dy)) {
+                    flag = true;
                     cat.setX(level.getSectors()[dx][dy].getX() + GameObject.Size);
-                return true;
+                }
+                return flag;
             case UP:
                 dx2 = (cat.getX() + Cat.Size) / GameObject.Size;
                 dy = (cat.getY() + Cat.Size) / GameObject.Size;
                 dx = (cat.getX()) / GameObject.Size;
-                if (Overlaps(cat, level, dx, dy))
+                if (Overlaps(cat, level, dx, dy)) {
+                    flag = true;
                     cat.setY(level.getSectors()[dx][dy].getY() - Cat.Size);
-                if (Overlaps(cat, level, dx2, dy))
+                }
+                if (Overlaps(cat, level, dx2, dy)) {
+                    flag = true;
                     cat.setY(level.getSectors()[dx2][dy].getY() - Cat.Size);
-                return true;
+                }
+                return flag;
         }
-        return false;
+        return flag;
     }
+
 }

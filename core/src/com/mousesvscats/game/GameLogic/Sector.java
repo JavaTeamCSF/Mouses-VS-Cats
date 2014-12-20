@@ -13,6 +13,7 @@ import com.mousesvscats.game.GameLogic.items.Item;
 public class Sector extends GameObject {
     private Item item;
     private SectorType sectorType;
+    private boolean isCrossRoad;
 
     /**Конструктор сектора*/
     public Sector(SectorType sectorType) {
@@ -35,4 +36,12 @@ public class Sector extends GameObject {
     public void setItem(Item item) {
         this.item = item;
     }
+
+    public void setCrossRoad(boolean isCrossRoad) {
+        this.isCrossRoad=isCrossRoad;
+    }
+    public boolean isCrossRoad() {
+        return this.isCrossRoad;
+    }
+
 }

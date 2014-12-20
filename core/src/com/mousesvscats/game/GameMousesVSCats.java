@@ -38,7 +38,7 @@ public class GameMousesVSCats extends ApplicationAdapter {
 
     @Override
     public void create () {
-        mygame = new GameClass(new Labyrinth("level_1.txt"));
+        mygame = new GameClass(new Labyrinth("level_2.txt"));
         mygame.getLevel().generateItems(); //генерация рандомного расположения предметов на уровне
         batch = new SpriteBatch();
 
@@ -76,6 +76,13 @@ public class GameMousesVSCats extends ApplicationAdapter {
             put(SectorType.OPENED_DOOR, new TextureRegion(new Texture(Gdx.files.internal("door_open.png"))));
         }
         };
+        mygame.getLevel().getSectors()[17][3].setCrossRoad(true);
+        mygame.getLevel().getSectors()[17][1].setCrossRoad(true);
+        mygame.getLevel().getSectors()[9][1].setCrossRoad(true);
+        mygame.getLevel().getSectors()[9][3].setCrossRoad(true);
+        mygame.getLevel().getSectors()[9][6].setCrossRoad(true);
+        mygame.getLevel().getSectors()[17][6].setCrossRoad(true);
+
     }
 
     @Override
@@ -123,12 +130,9 @@ public class GameMousesVSCats extends ApplicationAdapter {
 
         /**отрисовка кошек*/
         batch.draw(tex_cat.get(mygame.getCat().getDirection()),mygame.getCat().getX(),mygame.getCat().getY());
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+/*        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             mygame.getCat().setDirection(Direction.RIGHT);
             mygame.getCat().setX(mygame.getCat().getX() + (int) (mygame.getCat().getSpeed() * DELTA_TIME));
-            /*Перемещаем перса на некоторое расстояние вправо
-            а затем проверяем, не "наехал" ли он на объект, на который нельзя наезжать
-             getDeltaTime - время, прошедшее после последнего отрисованного кадра*/
             Collision.Collision(mygame.getCat(), mygame.getLevel());
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
@@ -145,7 +149,10 @@ public class GameMousesVSCats extends ApplicationAdapter {
             mygame.getCat().setDirection(Direction.DOWN);
             mygame.getCat().setY(mygame.getCat().getY() - (int) (mygame.getCat().getSpeed() * DELTA_TIME));
             Collision.Collision(mygame.getCat(), mygame.getLevel());
-        }
+        }*/
+
+        mygame.getCat().CatMove(mygame.getLevel(),mygame.getMouse().getX(),mygame.getMouse().getY());
+
 
         /**отрисовка мыши*/
 
