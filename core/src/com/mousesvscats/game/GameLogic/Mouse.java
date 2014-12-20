@@ -21,6 +21,7 @@ public class Mouse extends Creature {
     }
 
     public Mouse(int x, int y, int speed) {
+        //check
         texture_down = new Texture("mousedown.png");
         texture_up = new Texture("mouseup.png");
         texture_left = new Texture("mouseleft.png");
