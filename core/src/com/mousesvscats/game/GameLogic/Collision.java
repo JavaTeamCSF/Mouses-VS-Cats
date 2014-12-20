@@ -28,21 +28,6 @@ public class Collision {
         return false;
     }
 
-    private static void A(Mouse mouse, Labyrinth level,int dx,int dy){
-        if (level.getSectors()[dx][dy].getItem() instanceof Cheese){
-            level.getSectors()[dx][dy].getItem().taken(level,mouse,dx,dy);
-        }
-        if (level.getSectors()[dx][dy].getItem() instanceof Weapon){
-            Weapon w=(Weapon)level.getSectors()[dx][dy].getItem();
-            mouse.setWeapon(w);
-        }
-        if (level.getSectors()[dx][dy].getItem() instanceof Key){
-            level.openDoor();
-        }
-    }
-
-
-
     public static boolean Collision(Mouse mouse, Labyrinth level) {
         int dx,dx2,dy,dy2;
         switch (mouse.getDirection()) {
@@ -57,12 +42,12 @@ public class Collision {
                         level.getSectors()[dx][dy].getItem().taken(level,mouse,dx,dy);
                     }
                     if (level.getSectors()[dx][dy].getItem() instanceof Weapon){
-                        Weapon w=(Weapon)level.getSectors()[dx][dy].getItem();
-                        mouse.setWeapon(w);
-
+                        mouse.getWeapons().add((Weapon)level.getSectors()[dx][dy].getItem());
+                        mouse.setWeapon((Weapon) level.getSectors()[dx][dy].getItem());
+                        level.getSectors()[dx][dy].getItem().taken(level,mouse,dx,dy);
                     }
                     if (level.getSectors()[dx][dy].getItem() instanceof Key){
-                        level.openDoor();
+                        level.getSectors()[dx][dy].getItem().taken(level,mouse,dx,dy);
                     }
                     else
                       mouse.setX(level.getSectors()[dx][dy2].getX() - Cat.Size);
@@ -81,11 +66,12 @@ public class Collision {
                         level.getSectors()[dx][dy].getItem().taken(level,mouse,dx,dy);
                     }
                     if (level.getSectors()[dx][dy].getItem() instanceof Weapon){
-                        Weapon w=(Weapon)level.getSectors()[dx][dy].getItem();
-                        mouse.setWeapon(w);
+                        mouse.getWeapons().add((Weapon)level.getSectors()[dx][dy].getItem());//list of weapons
+                        mouse.setWeapon((Weapon) level.getSectors()[dx][dy].getItem());//current
+                        level.getSectors()[dx][dy].getItem().taken(level, mouse, dx, dy);;
                     }
                     if (level.getSectors()[dx][dy].getItem() instanceof Key){
-                        level.openDoor();
+                        level.getSectors()[dx][dy].getItem().taken(level, mouse, dx, dy);
                     }
                     else
                         mouse.setY(level.getSectors()[dx][dy].getY() + GameObject.Size);
@@ -98,15 +84,16 @@ public class Collision {
                 dy2 = (mouse.getY() + Cat.Size) / GameObject.Size;
                 dx = mouse.getX() / GameObject.Size;
                 if (Overlaps(mouse, level, dx, dy2)) {
-                    if (level.getSectors()[dx][dy].getItem() instanceof Cheese){
-                        level.getSectors()[dx][dy].getItem().taken(level,mouse,dx,dy);
+                    if (level.getSectors()[dx][dy2].getItem() instanceof Cheese){
+                        level.getSectors()[dx][dy2].getItem().taken(level,mouse,dx,dy2);
                     }
-                    if (level.getSectors()[dx][dy].getItem() instanceof Weapon){
-                        Weapon w=(Weapon)level.getSectors()[dx][dy].getItem();
-                        mouse.setWeapon(w);
+                    if (level.getSectors()[dx][dy2].getItem() instanceof Weapon){
+                        mouse.getWeapons().add((Weapon)level.getSectors()[dx][dy].getItem());
+                        mouse.setWeapon((Weapon) level.getSectors()[dx][dy].getItem());
+                        level.getSectors()[dx][dy2].getItem().taken(level, mouse, dx, dy2);
                     }
-                    if (level.getSectors()[dx][dy].getItem() instanceof Key){
-                        level.openDoor();
+                    if (level.getSectors()[dx][dy2].getItem() instanceof Key){
+                        level.getSectors()[dx][dy2].getItem().taken(level, mouse, dx, dy2);
                     }
                     else
                         mouse.setX(level.getSectors()[dx][dy2].getX() + GameObject.Size);
@@ -123,11 +110,12 @@ public class Collision {
                         level.getSectors()[dx][dy].getItem().taken(level,mouse,dx,dy);
                     }
                     if (level.getSectors()[dx][dy].getItem() instanceof Weapon){
-                        Weapon w=(Weapon)level.getSectors()[dx][dy].getItem();
-                        mouse.setWeapon(w);
+                        mouse.getWeapons().add((Weapon)level.getSectors()[dx][dy].getItem());
+                        mouse.setWeapon((Weapon) level.getSectors()[dx][dy].getItem());
+                        level.getSectors()[dx][dy].getItem().taken(level, mouse, dx, dy);
                     }
                     if (level.getSectors()[dx][dy].getItem() instanceof Key){
-                        level.openDoor();
+                        level.getSectors()[dx][dy].getItem().taken(level,mouse,dx,dy);
                     }
                     else
                         mouse.setY(level.getSectors()[dx][dy].getY() - Cat.Size);

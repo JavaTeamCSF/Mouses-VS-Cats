@@ -176,6 +176,18 @@ public class GameMousesVSCats extends ApplicationAdapter {
             Collision.Collision(mygame.getMouse(), mygame.getLevel());
         }
 
+        if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
+            int index=mygame.getMouse().getWeapons().indexOf(mygame.getMouse().getWeapon());//index of current weapon
+           // if (mygame.getMouse().getWeapons()) проверка на выход за пределы листа, когда только одно оружие!
+            mygame.getMouse().setWeapon(mygame.getMouse().getWeapons().get(index-1));
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            int index=mygame.getMouse().getWeapons().indexOf(mygame.getMouse().getWeapon());//index of current weapon
+            // if (mygame.getMouse().getWeapons()) проверка на выход за пределы листа, когда только одно оружие!
+            mygame.getMouse().setWeapon(mygame.getMouse().getWeapons().get(index+1));
+        }
+
         batch.end();
     }
 }
