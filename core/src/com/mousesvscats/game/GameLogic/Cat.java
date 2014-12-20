@@ -1,7 +1,5 @@
 package com.mousesvscats.game.GameLogic;
 
-import com.badlogic.gdx.graphics.Texture;
-
 public class Cat extends Creature {
     protected Instance instance;
     protected int normalSpeed; //запоминаем скорость в нормальном состоянии
@@ -30,16 +28,11 @@ public class Cat extends Creature {
     }
 
     public Cat(int x, int y, int speed) {
-        texture_down = new Texture("catdown.png");
-        texture_up = new Texture("catup.png");
-        texture_left = new Texture("catleft.png");
-        texture_right = new Texture("catright.png");
-        setTexture(texture_up);
         setDirection(Direction.UP);
         setInstance(Instance.Normal);
         this.setX(x);
         this.setY(y);
-        this.normalSpeed=speed;
+        this.normalSpeed = speed;
         setSpeed(speed);
         setAccessible(true);
     }

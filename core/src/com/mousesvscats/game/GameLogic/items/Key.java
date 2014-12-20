@@ -8,8 +8,8 @@ import com.mousesvscats.game.GameLogic.Labyrinth;
  */
 public class Key extends Item {
     @Override
-    public void taken(Labyrinth labyrinth, Mouse mouse) {
-        if (labyrinth.cheeseLeft() == 0)
-            labyrinth.openDoor();
+    public void taken(Labyrinth labyrinth, Mouse mouse, int x, int y) {
+        labyrinth.openDoor();
+        labyrinth.collectItem(x, y);
     }
 }

@@ -13,7 +13,8 @@ public class DistractGun extends Weapon{
     }
 
     @Override
-    public void taken(Labyrinth labyrinth, Mouse mouse) {
+    public void taken(Labyrinth labyrinth, Mouse mouse, int x, int y) {
         mouse.setWeapon(this);
+        labyrinth.collectItem(x, y);
     }
 }

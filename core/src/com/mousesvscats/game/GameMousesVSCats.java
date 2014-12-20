@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mousesvscats.game.GameLogic.*;
 import com.mousesvscats.game.GameLogic.items.*;
 
+import java.util.HashMap;
+
 public class GameMousesVSCats extends ApplicationAdapter {
 
     private GameClass mygame;
@@ -17,68 +19,110 @@ public class GameMousesVSCats extends ApplicationAdapter {
     static final double DELTA_TIME = 0.016; //частота обновления кадров
     private static final int CELL_SIZE = 16;
 
-    TextureRegion cheese;
-    TextureRegion weaponSlower;
-    TextureRegion weaponDistractor;
-    TextureRegion weaponFreezer;
-    TextureRegion key;
+    /**текстуры предметов*/
+    TextureRegion tex_cheese;
+    TextureRegion tex_weaponSlower;
+    TextureRegion tex_weaponDistractor;
+    TextureRegion tex_weaponFreezer;
+    TextureRegion tex_key;
+
+    /**спрайты кошек*/
+    HashMap<Direction, TextureRegion> tex_cat;
+
+    /**спрайты мыши*/
+    HashMap<Direction, TextureRegion> tex_mouse;
+
+    /**текстуры секторов*/
+    HashMap<SectorType, TextureRegion> tex_sector;
 
 
     @Override
     public void create () {
         mygame = new GameClass(new Labyrinth("level_1.txt"));
-        mygame.getLevel().generateItems();
+        mygame.getLevel().generateItems(); //генерация рандомного расположения предметов на уровне
         batch = new SpriteBatch();
-        cheese = new TextureRegion(new Texture(Gdx.files.internal("cheese.png")));
 
-        weaponSlower = new TextureRegion(new Texture(Gdx.files.internal("slow.gif")));
-        weaponDistractor = new TextureRegion(new Texture(Gdx.files.internal("distract.png")));
-        weaponFreezer = new TextureRegion(new Texture(Gdx.files.internal("freezer.jpg")));
-        key = new TextureRegion(new Texture(Gdx.files.internal("key.png")));
+        /**текстуры предметов*/
+        tex_cheese = new TextureRegion(new Texture(Gdx.files.internal("cheese.png")));
+        tex_weaponSlower = new TextureRegion(new Texture(Gdx.files.internal("slow.gif")));
+        tex_weaponDistractor = new TextureRegion(new Texture(Gdx.files.internal("distract.png")));
+        tex_weaponFreezer = new TextureRegion(new Texture(Gdx.files.internal("freezer.jpg")));
+        tex_key = new TextureRegion(new Texture(Gdx.files.internal("key.png")));
+
+        /**спрайты кошек*/
+        tex_cat = new HashMap<Direction, TextureRegion>() {{
+            put(Direction.DOWN, new TextureRegion(new Texture(Gdx.files.internal("catdown.png"))));
+            put(Direction.UP, new TextureRegion(new Texture(Gdx.files.internal("catup.png"))));
+            put(Direction.LEFT, new TextureRegion(new Texture(Gdx.files.internal("catleft.png"))));
+            put(Direction.RIGHT, new TextureRegion(new Texture(Gdx.files.internal("catright.png"))));
+        }
+        };
+
+        /**спрайты мыши*/
+        tex_mouse = new HashMap<Direction, TextureRegion>() {{
+            put(Direction.DOWN, new TextureRegion(new Texture(Gdx.files.internal("mousedown.png"))));
+            put(Direction.UP, new TextureRegion(new Texture(Gdx.files.internal("mouseup.png"))));
+            put(Direction.LEFT, new TextureRegion(new Texture(Gdx.files.internal("mouseleft.png"))));
+            put(Direction.RIGHT, new TextureRegion(new Texture(Gdx.files.internal("mouseright.png"))));
+        }
+        };
+
+        /**текстуры секторов*/
+        tex_sector = new HashMap<SectorType, TextureRegion>() {{
+            put(SectorType.EMPTY, new TextureRegion(new Texture(Gdx.files.internal("empty.png"))));
+            put(SectorType.WALL, new TextureRegion(new Texture(Gdx.files.internal("wall.png"))));
+            put(SectorType.CLOSED_VER_DOOR, new TextureRegion(new Texture(Gdx.files.internal("door_ver.png"))));
+            put(SectorType.CLOSED_GOR_DOOR, new TextureRegion(new Texture(Gdx.files.internal("door_gor.png"))));
+            put(SectorType.OPENED_DOOR, new TextureRegion(new Texture(Gdx.files.internal("door_open.png"))));
+        }
+        };
     }
 
     @Override
     public void render () {
         batch.begin();
 
-        for (int i = 0; i<mygame.getLevel().getSectors().length; i++)
+        /**отрисовка секторов и предметов*/
+        for (int i = 0; i < mygame.getLevel().getSectors().length; i++)
             for (int j = 0; j < mygame.getLevel().getSectors()[0].length; j++) {
-                batch.draw(mygame.getLevel().getSectors()[j][i].getTexture(),
+                batch.draw(tex_sector.get(mygame.getLevel().getSectors()[j][i].getSectorType()),
                         j*CELL_SIZE,
                         i*CELL_SIZE,
                         CELL_SIZE, CELL_SIZE);
                 if (mygame.getLevel().getSectors()[j][i].getItem() instanceof Cheese) {
-                    batch.draw(cheese,
+                    batch.draw(tex_cheese,
                             j*CELL_SIZE,
                             i*CELL_SIZE,
                             CELL_SIZE, CELL_SIZE);
                 }
                 else if (mygame.getLevel().getSectors()[j][i].getItem() instanceof Key) {
-                    batch.draw(key,
+                    batch.draw(tex_key,
                             j*CELL_SIZE,
                             i*CELL_SIZE,
                             CELL_SIZE, CELL_SIZE);
                 }
                 else if (mygame.getLevel().getSectors()[j][i].getItem() instanceof DistractGun) {
-                    batch.draw(weaponDistractor,
+                    batch.draw(tex_weaponDistractor,
                             j*CELL_SIZE,
                             i*CELL_SIZE,
                             CELL_SIZE, CELL_SIZE);
                 }
                 else if (mygame.getLevel().getSectors()[j][i].getItem() instanceof FreezerGun) {
-                    batch.draw(weaponFreezer,
+                    batch.draw(tex_weaponFreezer,
                             j*CELL_SIZE,
                             i*CELL_SIZE,
                             CELL_SIZE, CELL_SIZE);
                 }
                 else if (mygame.getLevel().getSectors()[j][i].getItem() instanceof SlowGun) {
-                    batch.draw(weaponSlower,
+                    batch.draw(tex_weaponSlower,
                             j*CELL_SIZE,
                             i*CELL_SIZE,
                             CELL_SIZE, CELL_SIZE);
                 }
             }
-        batch.draw(mygame.getCat().getTexture(),mygame.getCat().getX(),mygame.getCat().getY());
+
+        /**отрисовка кошек*/
+        batch.draw(tex_cat.get(mygame.getCat().getDirection()),mygame.getCat().getX(),mygame.getCat().getY());
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             mygame.getCat().setDirection(Direction.RIGHT);
             mygame.getCat().setX(mygame.getCat().getX() + (int) (mygame.getCat().getSpeed() * DELTA_TIME));
@@ -103,7 +147,9 @@ public class GameMousesVSCats extends ApplicationAdapter {
             Collision.Collision(mygame.getCat(), mygame.getLevel());
         }
 
-        batch.draw(mygame.getMouse().getTexture(), mygame.getMouse().getX(), mygame.getMouse().getY());
+        /**отрисовка мыши*/
+        batch.draw(tex_mouse.get(mygame.getMouse().getDirection()), mygame.getMouse().getX(), mygame.getMouse().getY());
+
         batch.end();
     }
 }

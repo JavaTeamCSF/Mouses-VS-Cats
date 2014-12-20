@@ -20,19 +20,5 @@ public class Creature extends GameObject {
     }
     public void setDirection(Direction direction) {
         this.direction=direction;
-        switch (direction) {
-            case DOWN:
-                setTexture(texture_down);
-                break;
-            case RIGHT:
-                setTexture(texture_right);
-                break;
-            case UP:
-                setTexture(texture_up);
-                break;
-            case LEFT:
-                setTexture(texture_left);
-                break;
-        }
     }
 }

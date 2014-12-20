@@ -21,12 +21,13 @@ public class Labyrinth {
 
     private Sector[][] sectors = new Sector[LABYRINTH_HEIGHT][LABYRINTH_WIDTH]; //лабиринт - матрица секторов
 
-    private int cheeseCount;
-    private int cheeseRemaining;
-    private boolean isDoorOpened;
+    private int cheeseCount; //количество сыра на уровне
+    private int cheeseRemaining; //количество несобранного сыра
+    private boolean doorOpened;
 
     /**Конструктор лабиринта*/
     public Labyrinth(String path){
+        doorOpened = false;
         BufferedReader reader = null;
         try {
             File file = new File(path);
@@ -86,6 +87,7 @@ public class Labyrinth {
     /**Получить матрицу лабиринта*/
     public Sector[][] getSectors(){return sectors;}
 
+    /**Получаем рандомный пустой сектор*/
     private Vector2 getRandomEmptyCell() {
         Vector2 test;
         while (true) {
@@ -96,6 +98,7 @@ public class Labyrinth {
         }
     }
 
+    /**Генерируем рандомное расположение предметов на уровне*/
     public void generateItems() {
         cheeseCount = 5;
         cheeseRemaining = cheeseCount;
@@ -120,27 +123,37 @@ public class Labyrinth {
         sectors[(int)rand.x][(int)rand.y].setItem(new FreezerGun());
     }
 
-    public void collectCheese() {
+    /**Собрали сыр из сектора*/
+    public void collectCheese(int x, int y) {
         this.cheeseRemaining--;
+        this.collectItem(x,y);
     }
 
+    public void collectItem(int x, int y) {
+        this.sectors[x][y].setItem(null);
+    }
+
+    /**Количество несобранного сыра*/
     public int cheeseLeft() {
         return cheeseRemaining;
     }
 
+    /**Открываем дверь*/
     public void openDoor() {
-        boolean found  = false;
         for (int j = 0; j < LABYRINTH_WIDTH; j++) {
-            if (found)
+            if (doorOpened)
                 break;
 
             for (int i = 0; i < LABYRINTH_HEIGHT; i++) {
                 if (sectors[i][j].getSectorType() == SectorType.CLOSED_GOR_DOOR || sectors[i][j].getSectorType() == SectorType.CLOSED_VER_DOOR) {
                     sectors[i][j].setSectorType(SectorType.OPENED_DOOR);
-                    found = true;
+                    doorOpened = true;
                     break;
                 }
             }
         }
     }
+
+    /**Дверь открыта?*/
+    public boolean isDoorOpened() {return doorOpened;}
 }

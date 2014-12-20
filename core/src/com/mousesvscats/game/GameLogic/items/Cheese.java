@@ -8,7 +8,7 @@ import com.mousesvscats.game.GameLogic.Labyrinth;
  */
 public class Cheese extends Item {
     @Override
-    public void taken(Labyrinth labyrinth, Mouse mouse) {
-        labyrinth.collectCheese();
+    public void taken(Labyrinth labyrinth, Mouse mouse, int x, int y) {
+        labyrinth.collectCheese(x, y);
     }
 }
