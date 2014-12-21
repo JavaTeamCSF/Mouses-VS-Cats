@@ -1,10 +1,7 @@
 package com.mousesvscats.game.GameLogic;
 
-import com.badlogic.gdx.graphics.Texture;
-
 public class Creature extends GameObject {
-    public static final int Size=14;//у персов текстуры меньше, чтобы можно было пройти в дырку
-    protected Texture texture_down,texture_up,texture_left,texture_right;
+    public static final int Size = 14;//у персов текстуры меньше, чтобы можно было пройти в дырку
     protected int speed;
     protected Direction direction;
 

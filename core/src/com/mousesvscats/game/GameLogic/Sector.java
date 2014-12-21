@@ -43,5 +43,4 @@ public class Sector extends GameObject {
     public boolean isCrossRoad() {
         return this.isCrossRoad;
     }
-
 }

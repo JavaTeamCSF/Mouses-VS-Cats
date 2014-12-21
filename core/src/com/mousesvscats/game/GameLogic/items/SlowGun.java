@@ -14,7 +14,8 @@ public class SlowGun extends Weapon {
 
     @Override
     public void taken(Labyrinth labyrinth, Mouse mouse, int x, int y) {
-        mouse.setWeapon(this);
+        mouse.getWeapons().add(this);
+        mouse.setCurrentWeapon(this);
         labyrinth.collectItem(x, y);
     }
 }

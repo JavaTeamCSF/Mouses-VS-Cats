@@ -21,12 +21,16 @@ public class Labyrinth {
 
     private Sector[][] sectors = new Sector[LABYRINTH_HEIGHT][LABYRINTH_WIDTH]; //лабиринт - матрица секторов
 
+    private int weaponCount; //количество оружия на уровне
     private int cheeseCount; //количество сыра на уровне
     private int cheeseRemaining; //количество несобранного сыра
     private boolean doorOpened;
+    private int score;
 
     /**Конструктор лабиринта*/
     public Labyrinth(String path){
+        weaponCount = 3;
+        score = 0;
         doorOpened = false;
         BufferedReader reader = null;
         try {
@@ -53,10 +57,10 @@ public class Labyrinth {
                             sectors[j][i].setAccessible(false);
                             break;
                         case 2:
-                            if (i == 0 || i == LABYRINTH_WIDTH - 1) {
+                            if (j == 0 || j == LABYRINTH_WIDTH - 1) {
                                 sectors[j][i] = new Sector(SectorType.CLOSED_GOR_DOOR);  //если на левой/правой границе лабиринта
                             }
-                            else if (j == 0 || j == LABYRINTH_HEIGHT - 1)
+                            else if (i == 0 || i == LABYRINTH_HEIGHT - 1)
                                 sectors[j][i] = new Sector(SectorType.CLOSED_VER_DOOR);  //если на верхней/нижней границе лабиринта
                             sectors[j][i].setX(GameObject.Size * j);
                             sectors[j][i].setY(GameObject.Size * i);
@@ -82,6 +86,8 @@ public class Labyrinth {
                 e.printStackTrace();
             }
         }
+        this.generateItems(); //генерация рандомного расположения предметов на уровне
+        this.setCrossRoadsAndCorners();
     }
 
     /**Получить матрицу лабиринта*/
@@ -127,8 +133,20 @@ public class Labyrinth {
     public void collectCheese(int x, int y) {
         this.cheeseRemaining--;
         this.collectItem(x,y);
+        this.score += 500;
     }
 
+    /**Получить количество очков*/
+    public int getScore() {
+        return score;
+    }
+
+    /**Получить количество оружия на уровне*/
+    public int getWeaponCount() {
+        return weaponCount;
+    }
+
+    /**Установить пустой сектор (после поднятия предмета)*/
     public void collectItem(int x, int y) {
         this.sectors[x][y].setItem(null);
     }
@@ -136,6 +154,11 @@ public class Labyrinth {
     /**Количество несобранного сыра*/
     public int cheeseLeft() {
         return cheeseRemaining;
+    }
+
+    /**Количество собранного сыра*/
+    public int cheeseCollected() {
+        return cheeseCount - cheeseRemaining;
     }
 
     /**Открываем дверь*/
@@ -156,4 +179,24 @@ public class Labyrinth {
 
     /**Дверь открыта?*/
     public boolean isDoorOpened() {return doorOpened;}
+
+    /**Устанавливаем перекрестки*/
+    public void setCrossRoadsAndCorners() {
+        int count_way = 0;
+        for (int i = 0; i < this.LABYRINTH_HEIGHT; i++)
+            for (int j = 0; j < this.LABYRINTH_WIDTH; j++){
+                if (this.getSectors()[j][i].getSectorType() == SectorType.EMPTY) {
+                    count_way = 0;
+                    if (i - 1 >= 0 && this.getSectors()[j][i-1].getSectorType() == SectorType.EMPTY)                count_way++;
+                    if (i + 1 < LABYRINTH_HEIGHT && this.getSectors()[j][i+1].getSectorType() == SectorType.EMPTY)  count_way++;
+                    if (j - 1 >= 0 && this.getSectors()[j - 1][i].getSectorType() == SectorType.EMPTY)              count_way++;
+                    if (j + 1 < LABYRINTH_WIDTH && this.getSectors()[j + 1][i].getSectorType() == SectorType.EMPTY) count_way++;
+                }
+                if (count_way < 3){
+                    this.getSectors()[j][i].setCrossRoad(false);
+                }
+                else this.getSectors()[j][i].setCrossRoad(true);
+            }
+
+    }
 }

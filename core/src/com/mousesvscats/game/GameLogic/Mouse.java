@@ -8,20 +8,18 @@ import com.mousesvscats.game.GameLogic.items.Weapon;
 
 public class Mouse extends Creature {
     public boolean isDead;
-
+    private Weapon currentWeapon;
     private ArrayList<Weapon> weapons = new ArrayList<Weapon>();
-
-    public ArrayList<Weapon> getWeapons(){return  weapons;}
 
     //private void setWeapons(Weapon weapon){return  weapons;}
 
-    private Weapon currentWeapon;
+    public ArrayList<Weapon> getWeapons(){return  weapons;}
 
-    public Weapon getWeapon() {
+    public Weapon getCurrentWeapon() {
         return currentWeapon;
     }
 
-    public void setWeapon(Weapon weapon) {
+    public void setCurrentWeapon(Weapon weapon) {
         this.currentWeapon = weapon;
     }
 

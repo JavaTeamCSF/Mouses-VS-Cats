@@ -19,13 +19,17 @@ public class Collision {
 
     public static boolean Overlaps(Mouse mouse, Labyrinth level, int dx, int dy) {
 
-        if (!level.getSectors()[dx][dy].isAccessible() || level.getSectors()[dx][dy].getItem() instanceof Cheese ||
-                level.getSectors()[dx][dy].getItem() instanceof Weapon ||
-                level.getSectors()[dx][dy].getItem() instanceof Key)
-            if (mouse.getX() < level.getSectors()[dx][dy].x + GameObject.Size && mouse.getX() + Cat.Size > level.getSectors()[dx][dy].x &&
-                    mouse.getY() < level.getSectors()[dx][dy].y + GameObject.Size && mouse.getY() + Cat.Size > level.getSectors()[dx][dy].y)
+        if (!level.getSectors()[dx][dy].isAccessible() || DefineItem(level,mouse,dx,dy))
+            if (mouse.getX() < level.getSectors()[dx][dy].x + GameObject.Size && mouse.getX() + Mouse.Size > level.getSectors()[dx][dy].x &&
+                    mouse.getY() < level.getSectors()[dx][dy].y + GameObject.Size && mouse.getY() + Mouse.Size > level.getSectors()[dx][dy].y)
                 return true;
         return false;
+    }
+
+    private static boolean DefineItem(Labyrinth level,Mouse mouse,int dx,int dy){
+        return level.getSectors()[dx][dy].getItem() instanceof Cheese ||
+                level.getSectors()[dx][dy].getItem() instanceof Weapon
+                || level.getSectors()[dx][dy].getItem() instanceof Key;
     }
 
     public static boolean Collision(Mouse mouse, Labyrinth level) {
@@ -37,91 +41,66 @@ public class Collision {
                 dx = (mouse.getX() + Mouse.Size) / GameObject.Size;
                 dy = mouse.getY() / GameObject.Size;
                 /*Далее 2 случая:*/
-                if (Overlaps(mouse, level, dx, dy)) { // Если залезли нижним углом, возвращаем перса назад
-                    if (level.getSectors()[dx][dy].getItem() instanceof Cheese){
-                        level.getSectors()[dx][dy].getItem().taken(level,mouse,dx,dy);
-                    }
-                    if (level.getSectors()[dx][dy].getItem() instanceof Weapon){
-                        mouse.getWeapons().add((Weapon)level.getSectors()[dx][dy].getItem());
-                        mouse.setWeapon((Weapon) level.getSectors()[dx][dy].getItem());
-                        level.getSectors()[dx][dy].getItem().taken(level,mouse,dx,dy);
-                    }
-                    if (level.getSectors()[dx][dy].getItem() instanceof Key){
-                        level.getSectors()[dx][dy].getItem().taken(level,mouse,dx,dy);
-                    }
+                if (Overlaps(mouse, level, dx, dy))  // Если залезли нижним углом, возвращаем перса назад
+                    if (DefineItem(level, mouse, dx, dy))
+                        level.getSectors()[dx][dy].getItem().taken(level, mouse, dx, dy);
                     else
-                      mouse.setX(level.getSectors()[dx][dy2].getX() - Cat.Size);
-                }
+                        mouse.setX(level.getSectors()[dx][dy2].getX() - Mouse.Size);
                 if (Overlaps(mouse, level, dx, dy2))// Если залезли верхним углом, возвращаем перса назад
-                    mouse.setX(level.getSectors()[dx][dy].getX() - Cat.Size);
+                    if (DefineItem(level, mouse, dx, dy2))
+                        level.getSectors()[dx][dy2].getItem().taken(level, mouse, dx, dy2);
+                    else
+                        mouse.setX(level.getSectors()[dx][dy].getX() - Mouse.Size);
                 return true;
             /* В другие стороны - аналогично */
             case DOWN:
-                dx2 = (mouse.getX() + Cat.Size) / GameObject.Size;
+                dx2 = (mouse.getX() + Mouse.Size) / GameObject.Size;
                 dy = mouse.getY() / GameObject.Size;
                 dx = mouse.getX() / GameObject.Size;
 
-                if (Overlaps(mouse, level, dx, dy)) {
-                    if (level.getSectors()[dx][dy].getItem() instanceof Cheese){
-                        level.getSectors()[dx][dy].getItem().taken(level,mouse,dx,dy);
-                    }
-                    if (level.getSectors()[dx][dy].getItem() instanceof Weapon){
-                        mouse.getWeapons().add((Weapon)level.getSectors()[dx][dy].getItem());//list of weapons
-                        mouse.setWeapon((Weapon) level.getSectors()[dx][dy].getItem());//current
-                        level.getSectors()[dx][dy].getItem().taken(level, mouse, dx, dy);;
-                    }
-                    if (level.getSectors()[dx][dy].getItem() instanceof Key){
+                if (Overlaps(mouse, level, dx, dy))
+                    if (DefineItem(level, mouse, dx, dy))
                         level.getSectors()[dx][dy].getItem().taken(level, mouse, dx, dy);
-                    }
                     else
                         mouse.setY(level.getSectors()[dx][dy].getY() + GameObject.Size);
-                }
+
                 if (Overlaps(mouse, level, dx2, dy))
-                    mouse.setY(level.getSectors()[dx2][dy].getY() + GameObject.Size);
+                    if (DefineItem(level, mouse, dx2, dy))
+                        level.getSectors()[dx2][dy].getItem().taken(level, mouse, dx2, dy);
+                    else
+                        mouse.setY(level.getSectors()[dx2][dy].getY() + GameObject.Size);
                 return true;
             case LEFT:
                 dy = mouse.getY() / GameObject.Size;
-                dy2 = (mouse.getY() + Cat.Size) / GameObject.Size;
+                dy2 = (mouse.getY() + Mouse.Size) / GameObject.Size;
                 dx = mouse.getX() / GameObject.Size;
-                if (Overlaps(mouse, level, dx, dy2)) {
-                    if (level.getSectors()[dx][dy2].getItem() instanceof Cheese){
-                        level.getSectors()[dx][dy2].getItem().taken(level,mouse,dx,dy2);
-                    }
-                    if (level.getSectors()[dx][dy2].getItem() instanceof Weapon){
-                        mouse.getWeapons().add((Weapon)level.getSectors()[dx][dy].getItem());
-                        mouse.setWeapon((Weapon) level.getSectors()[dx][dy].getItem());
+                if (Overlaps(mouse, level, dx, dy2))
+                    if (DefineItem(level, mouse, dx, dy2))
                         level.getSectors()[dx][dy2].getItem().taken(level, mouse, dx, dy2);
-                    }
-                    if (level.getSectors()[dx][dy2].getItem() instanceof Key){
-                        level.getSectors()[dx][dy2].getItem().taken(level, mouse, dx, dy2);
-                    }
                     else
                         mouse.setX(level.getSectors()[dx][dy2].getX() + GameObject.Size);
-                }
+
                 if (Overlaps(mouse, level, dx, dy))
-                    mouse.setX(level.getSectors()[dx][dy].getX() + GameObject.Size);
+                    if (DefineItem(level, mouse, dx, dy))
+                        level.getSectors()[dx][dy].getItem().taken(level, mouse, dx, dy);
+                    else
+                        mouse.setX(level.getSectors()[dx][dy].getX() + GameObject.Size);
                 return true;
             case UP:
-                dx2 = (mouse.getX() + Cat.Size) / GameObject.Size;
-                dy = (mouse.getY() + Cat.Size) / GameObject.Size;
+                dx2 = (mouse.getX() + Mouse.Size) / GameObject.Size;
+                dy = (mouse.getY() + Mouse.Size) / GameObject.Size;
                 dx = (mouse.getX()) / GameObject.Size;
-                if (Overlaps(mouse, level, dx, dy)) {
-                    if (level.getSectors()[dx][dy].getItem() instanceof Cheese){
-                        level.getSectors()[dx][dy].getItem().taken(level,mouse,dx,dy);
-                    }
-                    if (level.getSectors()[dx][dy].getItem() instanceof Weapon){
-                        mouse.getWeapons().add((Weapon)level.getSectors()[dx][dy].getItem());
-                        mouse.setWeapon((Weapon) level.getSectors()[dx][dy].getItem());
+                if (Overlaps(mouse, level, dx, dy))
+                    if (DefineItem(level, mouse, dx, dy))
                         level.getSectors()[dx][dy].getItem().taken(level, mouse, dx, dy);
-                    }
-                    if (level.getSectors()[dx][dy].getItem() instanceof Key){
-                        level.getSectors()[dx][dy].getItem().taken(level,mouse,dx,dy);
-                    }
                     else
-                        mouse.setY(level.getSectors()[dx][dy].getY() - Cat.Size);
-                }
+                        mouse.setY(level.getSectors()[dx][dy].getY() - Mouse.Size);
+
                 if (Overlaps(mouse, level, dx2, dy))
-                    mouse.setY(level.getSectors()[dx2][dy].getY() - Cat.Size);
+                    if (DefineItem(level, mouse, dx2, dy))
+                        level.getSectors()[dx2][dy].getItem().taken(level, mouse, dx2, dy);
+                    else
+                        mouse.setY(level.getSectors()[dx2][dy].getY() - Mouse.Size);
                 return true;
         }
         return false;
@@ -190,5 +169,4 @@ public class Collision {
         }
         return flag;
     }
-
 }

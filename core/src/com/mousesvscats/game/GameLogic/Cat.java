@@ -1,21 +1,15 @@
 package com.mousesvscats.game.GameLogic;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.Texture;
-import com.mousesvscats.game.GameMousesVSCats;
-import jdk.nashorn.internal.objects.annotations.Where;
-
 public class Cat extends Creature {
-    public static final int Size = 16;//у персов текстуры меньше, чтобы можно было пройти в дырку
+    public static final int Size = 16;
     protected Instance instance;
     protected int normalSpeed; //запоминаем скорость в нормальном состоянии
-
-    protected enum Instance {Normal, Slow, Freezed, Dead}
+    protected enum Instance {Normal, Slow, Freezed, Dead }
 
     protected int destX, destY;
 
     public void setInstance(Instance instance_arg) {
-        this.instance = instance_arg;
+        this.instance=instance_arg;
         switch (instance_arg) {
             case Normal:
                 setSpeed(normalSpeed);
@@ -28,11 +22,10 @@ public class Cat extends Creature {
                 setSpeed(0);
                 break;
             case Slow:
-                setSpeed(normalSpeed / 2);
+                setSpeed(normalSpeed/2);
                 break;
         }
     }
-
     public Instance getInstance() {
         return this.instance;
     }
