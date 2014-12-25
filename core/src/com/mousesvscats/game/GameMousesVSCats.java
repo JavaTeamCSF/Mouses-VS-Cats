@@ -667,7 +667,10 @@ public class GameMousesVSCats extends ApplicationAdapter {
             }
 
         /**отрисовка кошек*/
-        batch.draw(tex_cat.get(mygame.getCat().getDirection()),mygame.getCat().getX(),mygame.getCat().getY());
+        for (int i=0;i<mygame.howManyCats;i++) {
+            batch.draw(tex_cat.get(mygame.getCat(i).getDirection()), mygame.getCat(i).getX(), mygame.getCat(i).getY());
+            mygame.getCat(i).CatMove(mygame.getLevel(), mygame.getMouse().getX(), mygame.getMouse().getY());
+        }
 /*        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             mygame.getCat().setDirection(Direction.RIGHT);
             mygame.getCat().setX(mygame.getCat().getX() + (int) (mygame.getCat().getSpeed() * DELTA_TIME));
@@ -690,7 +693,6 @@ public class GameMousesVSCats extends ApplicationAdapter {
             Collision.Collision(mygame.getCat(), mygame.getLevel());
         }*/
 
-        mygame.getCat().CatMove(mygame.getLevel(),mygame.getMouse().getX(),mygame.getMouse().getY());
 
         /**отрисовка мыши*/
         batch.draw(tex_mouse.get(mygame.getMouse().getDirection()),mygame.getMouse().getX(),mygame.getMouse().getY());

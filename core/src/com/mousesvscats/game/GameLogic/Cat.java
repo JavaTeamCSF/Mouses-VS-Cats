@@ -44,27 +44,28 @@ public class Cat extends Creature {
         int dx = this.x / GameObject.Size;//номер клетки в которой cat
         int dy = this.y / GameObject.Size;
         Direction dir=direction;
-        switch (direction) {
-            case DOWN:
-                setY(getY() - (int) (getSpeed() * 0.016));
-                break;
-            case LEFT:
-                setX(getX() - (int) (getSpeed() * 0.016));
-                break;
-            case RIGHT:
-                setX(getX() + (int) (getSpeed() * 0.016));
-                break;
-            case UP:
-                setY(getY() + (int) (getSpeed() * 0.016));
-                break;
-        }
-        if (level.getSectors()[dx][dy].isCrossRoad()) {
-            direction = WhereToGo(level, mouseX, mouseY);
-        }
+        if (getDistance(this.x,this.y,mouseX,mouseY)<100) { //на каком расстоянии начинаем атаковать
+            switch (direction) {
+                case DOWN:
+                    setY(getY() - (int) (getSpeed() * 0.016));
+                    break;
+                case LEFT:
+                    setX(getX() - (int) (getSpeed() * 0.016));
+                    break;
+                case RIGHT:
+                    setX(getX() + (int) (getSpeed() * 0.016));
+                    break;
+                case UP:
+                    setY(getY() + (int) (getSpeed() * 0.016));
+                    break;
+            }
+            if (level.getSectors()[dx][dy].isCrossRoad()) {
+                direction = WhereToGo(level, mouseX, mouseY);
+            }
 
-        if (Collision.Collision(this, level))
-            CatAI(level);
-
+            if (Collision.Collision(this, level))
+                CatAI(level);
+        }
     }
 
     public void CatAI(Labyrinth level) {
