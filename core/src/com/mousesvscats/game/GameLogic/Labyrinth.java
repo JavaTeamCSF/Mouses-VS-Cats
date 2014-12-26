@@ -94,7 +94,7 @@ public class Labyrinth {
     public Sector[][] getSectors(){return sectors;}
 
     /**Получаем рандомный пустой сектор*/
-    private Vector2 getRandomEmptyCell() {
+    public Vector2 getRandomEmptyCell() {
         Vector2 test;
         while (true) {
             test = new Vector2(random.nextInt(LABYRINTH_WIDTH), random.nextInt(LABYRINTH_HEIGHT));

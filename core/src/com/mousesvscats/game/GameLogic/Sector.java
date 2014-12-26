@@ -12,6 +12,7 @@ import com.mousesvscats.game.GameLogic.items.Item;
  */
 public class Sector extends GameObject {
     private Item item;
+    private TrapType trapType;
     private SectorType sectorType;
     private boolean isCrossRoad;
 
@@ -36,11 +37,20 @@ public class Sector extends GameObject {
     public void setItem(Item item) {
         this.item = item;
     }
-
+    /**установить перекресток*/
     public void setCrossRoad(boolean isCrossRoad) {
         this.isCrossRoad=isCrossRoad;
     }
+    /**Перекресток ли?*/
     public boolean isCrossRoad() {
         return this.isCrossRoad;
+    }
+    /**установить ловушку в сектор*/
+    public void setTrapType(TrapType trapType) {
+        this.trapType = trapType;
+    }
+    /**получить ловушку из сектора*/
+    public TrapType getTrapType() {
+        return trapType;
     }
 }

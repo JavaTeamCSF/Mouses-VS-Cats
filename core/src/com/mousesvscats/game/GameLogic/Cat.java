@@ -1,10 +1,13 @@
 package com.mousesvscats.game.GameLogic;
 
+import java.util.Random;
+
 public class Cat extends Creature {
     public static final int Size = 16;
     protected Instance instance;
     protected int normalSpeed; //запоминаем скорость в нормальном состоянии
-    protected enum Instance {Normal, Slow, Freezed, Dead }
+    protected enum Instance {Normal, Slow, Freezed, Dead };
+    private Random random = new Random();
 
     protected int destX, destY;
 
@@ -26,8 +29,25 @@ public class Cat extends Creature {
                 break;
         }
     }
+
     public Instance getInstance() {
         return this.instance;
+    }
+
+    public void setTrapped(TrapType trapType){
+        switch (trapType) {
+            case DISTRACT:
+                setInstance(Instance.Dead);
+                break;
+            case FREEZER:
+                setInstance(Instance.Freezed);
+                break;
+            case SLOW:
+                setInstance(Instance.Slow);
+                break;
+            default:
+                setInstance(Instance.Normal);
+        }
     }
 
     public Cat(int x, int y, int speed) {
@@ -43,74 +63,88 @@ public class Cat extends Creature {
     public void CatMove(Labyrinth level, int mouseX, int mouseY) {
         int dx = this.x / GameObject.Size;//номер клетки в которой cat
         int dy = this.y / GameObject.Size;
-        Direction dir=direction;
-        if (getDistance(this.x,this.y,mouseX,mouseY)<100) { //на каком расстоянии начинаем атаковать
-            switch (direction) {
-                case DOWN:
-                    setY(getY() - (int) (getSpeed() * 0.016));
-                    break;
-                case LEFT:
-                    setX(getX() - (int) (getSpeed() * 0.016));
-                    break;
-                case RIGHT:
-                    setX(getX() + (int) (getSpeed() * 0.016));
-                    break;
-                case UP:
-                    setY(getY() + (int) (getSpeed() * 0.016));
-                    break;
-            }
+        if (getDistance(this.x, this.y, mouseX, mouseY) < 100) { //на каком расстоянии начинаем атаковать
             if (level.getSectors()[dx][dy].isCrossRoad()) {
                 direction = WhereToGo(level, mouseX, mouseY);
             }
-
-            if (Collision.Collision(this, level))
-                CatAI(level);
         }
+        switch (direction) {
+            case DOWN:
+                setY(getY() - (int) (this.getSpeed() * 0.016));
+                break;
+            case LEFT:
+                setX(getX() - (int) (this.getSpeed() * 0.016));
+                break;
+            case RIGHT:
+                setX(getX() + (int) (this.getSpeed() * 0.016));
+                break;
+            case UP:
+                setY(getY() + (int) (this.getSpeed() * 0.016));
+                break;
+        }
+        if (Collision.Collision(this, level))
+            CatAI(level);
     }
 
     public void CatAI(Labyrinth level) {
         int dx = this.x / GameObject.Size;//номер клетки в которой cat
         int dy = this.y / GameObject.Size;
-        switch (this.direction) {
+        Direction dir = this.direction;
+        switch (dir) {
             case DOWN:
-                if (level.getSectors()[dx - 1][dy].isAccessible())
-                    this.setDirection(Direction.LEFT);
-                else if (level.getSectors()[dx + 1][dy].isAccessible())
-                    this.setDirection(Direction.RIGHT);
-                else
-                    this.setDirection(Direction.UP);
+                do {
+                    direction = getRandomDirection();
+                }
+                while (direction == Direction.DOWN);
                 break;
 
             case LEFT:
-                if (level.getSectors()[dx][dy + 1].isAccessible())
-                    this.setDirection(Direction.UP);
-                else if (level.getSectors()[dx][dy - 1].isAccessible())
-                    this.setDirection(Direction.DOWN);
-                else
-                    this.setDirection(Direction.RIGHT);
+                do {
+                    direction = getRandomDirection();
+                }
+                while (direction == Direction.LEFT);
                 break;
             case RIGHT:
-                if (level.getSectors()[dx][dy + 1].isAccessible())
-                    this.setDirection(Direction.UP);
-                else if (level.getSectors()[dx][dy - 1].isAccessible())
-                    this.setDirection(Direction.DOWN);
-                else
-                    this.setDirection(Direction.LEFT);
+                do {
+                    direction = getRandomDirection();
+                }
+                while (direction == Direction.RIGHT);
                 break;
 
             case UP:
-                if (level.getSectors()[dx - 1][dy].isAccessible())
-                    this.setDirection(Direction.LEFT);
-                else if (level.getSectors()[dx + 1][dy].isAccessible())
-                    this.setDirection(Direction.RIGHT);
-                else
-                    this.setDirection(Direction.DOWN);
+                do {
+                    direction = getRandomDirection();
+                }
+                while (direction == Direction.UP);
                 break;
         }
     }
 
     public double getDistance(int x1, int y1, int x2, int y2) {
         return Math.sqrt((Math.pow((x2 - x1), 2) + (Math.pow((y2 - y1), 2))));
+    }
+
+    public Direction getRandomDirection(){
+        Direction dir;
+        int index = random.nextInt(4);
+        switch (index) {
+            case 0:
+                dir = Direction.UP;
+                break;
+            case 1:
+                dir = Direction.DOWN;
+                break;
+            case 2:
+                dir = Direction.LEFT;
+                break;
+            case 3:
+                dir = Direction.RIGHT;
+                break;
+            default:
+                dir = Direction.UP;
+                break;
+        }
+        return dir;
     }
 
     public Direction WhereToGo(Labyrinth level, int mouseX, int mouseY) {
