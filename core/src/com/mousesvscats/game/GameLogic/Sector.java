@@ -11,6 +11,7 @@ import com.mousesvscats.game.GameLogic.items.Item;
  * Created by Артём on 04.12.2014.
  */
 public class Sector extends GameObject {
+    public static final int SIZE = 16;
     private Item item;
     private TrapType trapType;
     private SectorType sectorType;
@@ -39,7 +40,7 @@ public class Sector extends GameObject {
     }
     /**установить перекресток*/
     public void setCrossRoad(boolean isCrossRoad) {
-        this.isCrossRoad=isCrossRoad;
+        this.isCrossRoad = isCrossRoad;
     }
     /**Перекресток ли?*/
     public boolean isCrossRoad() {

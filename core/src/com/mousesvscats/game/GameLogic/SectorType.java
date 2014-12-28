@@ -6,7 +6,7 @@ package com.mousesvscats.game.GameLogic;
 public enum SectorType {
     EMPTY,          //свободная клетка
     WALL,           //стена
-    CLOSED_VER_DOOR,    //закрытая вертикальная дверь
-    CLOSED_GOR_DOOR,
+    CLOSED_VER_DOOR,//закрытая вертикальная дверь
+    CLOSED_GOR_DOOR,//закрытая горизонтальная стена
     OPENED_DOOR;    //открытая дверь
 }

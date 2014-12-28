@@ -1,14 +1,13 @@
 package com.mousesvscats.game.GameLogic;
 
 public class Creature extends GameObject {
-    public static final int Size = 14;//у персов текстуры меньше, чтобы можно было пройти в дырку
-    protected int speed;
-    protected Direction direction;
+    protected float speed; //скорость
+    protected Direction direction; //направление движения
 
-    public void setSpeed(int speed) {
+    public void setSpeed(float speed) {
         this.speed = speed;
     }
-    public int getSpeed() {
+    public float getSpeed() {
         return speed;
     }
 

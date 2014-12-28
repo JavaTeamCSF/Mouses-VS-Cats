@@ -2,7 +2,6 @@ package com.mousesvscats.game.GameLogic;
 
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.mousesvscats.game.GameLogic.items.*;
 import java.io.BufferedReader;
 import java.io.File;
@@ -24,8 +23,8 @@ public class Labyrinth {
     private int weaponCount; //количество оружия на уровне
     private int cheeseCount; //количество сыра на уровне
     private int cheeseRemaining; //количество несобранного сыра
-    private boolean doorOpened;
-    private int score;
+    private boolean doorOpened; //флаг открытой двери
+    private int score; //очки за собранный сыр
 
     /**Конструктор лабиринта*/
     public Labyrinth(String path){
@@ -39,21 +38,21 @@ public class Labyrinth {
 
             String[] elements = new String[LABYRINTH_HEIGHT];
             int temp;
-            for (int i = LABYRINTH_HEIGHT-1; i>=0; i--) {
+            for (int i = LABYRINTH_HEIGHT - 1; i >= 0; i--) {
                 elements[i] = reader.readLine();
                 for (int j = 0; j < LABYRINTH_WIDTH; j++) {
                     temp = Character.getNumericValue(elements[i].charAt(j));
                     switch (temp) {
                         case 0:
-                            sectors[j][i] = new Sector(SectorType.EMPTY); //МАГИЯ!! почему-то j и i нужно менять местами
-                            sectors[j][i].setX(GameObject.Size * j);//копипаст
-                            sectors[j][i].setY(GameObject.Size * i);
+                            sectors[j][i] = new Sector(SectorType.EMPTY);
+                            sectors[j][i].setX(Sector.SIZE * j);
+                            sectors[j][i].setY(Sector.SIZE * i);
                             sectors[j][i].setAccessible(true);
                             break;
                         case 1:
                             sectors[j][i] = new Sector(SectorType.WALL); //если элемент матрицы = 1, то сектор - стена
-                            sectors[j][i].setX(GameObject.Size * j);
-                            sectors[j][i].setY(GameObject.Size * i);
+                            sectors[j][i].setX(Sector.SIZE * j);
+                            sectors[j][i].setY(Sector.SIZE * i);
                             sectors[j][i].setAccessible(false);
                             break;
                         case 2:
@@ -62,14 +61,14 @@ public class Labyrinth {
                             }
                             else if (i == 0 || i == LABYRINTH_HEIGHT - 1)
                                 sectors[j][i] = new Sector(SectorType.CLOSED_VER_DOOR);  //если на верхней/нижней границе лабиринта
-                            sectors[j][i].setX(GameObject.Size * j);
-                            sectors[j][i].setY(GameObject.Size * i);
+                            sectors[j][i].setX(Sector.SIZE * j);
+                            sectors[j][i].setY(Sector.SIZE * i);
                             sectors[j][i].setAccessible(false);
                             break;
                         default:
                             sectors[j][i] = new Sector(SectorType.EMPTY);
-                            sectors[j][i].setX(GameObject.Size * j);
-                            sectors[j][i].setY(GameObject.Size * i);
+                            sectors[j][i].setX(Sector.SIZE * j);
+                            sectors[j][i].setY(Sector.SIZE * i);
                             sectors[j][i].setAccessible(true);
                             break;
                     }
@@ -87,7 +86,7 @@ public class Labyrinth {
             }
         }
         this.generateItems(); //генерация рандомного расположения предметов на уровне
-        this.setCrossRoadsAndCorners();
+        this.setCrossRoadsAndCorners(); //автоопределение перекрестков на уровне
     }
 
     /**Получить матрицу лабиринта*/
@@ -116,11 +115,14 @@ public class Labyrinth {
 
         Vector2 rand;
 
-        rand = getRandomEmptyCell();
+        do {
+            rand = getRandomEmptyCell();
+        }
+        while (Math.sqrt((Math.pow((rand.x * Sector.SIZE - GameClass.mouse_x), 2) + (Math.pow((rand.y * Sector.SIZE - GameClass.mouse_y), 2)))) < 250);
         sectors[(int)rand.x][(int)rand.y].setItem(new Key());
 
         rand = getRandomEmptyCell();
-        sectors[(int)rand.x][(int)rand.y].setItem(new DistractGun());
+        sectors[(int)rand.x][(int)rand.y].setItem(new KillerGun());
 
         rand = getRandomEmptyCell();
         sectors[(int)rand.x][(int)rand.y].setItem(new SlowGun());
@@ -183,8 +185,8 @@ public class Labyrinth {
     /**Устанавливаем перекрестки*/
     public void setCrossRoadsAndCorners() {
         int count_way = 0;
-        for (int i = 0; i < this.LABYRINTH_HEIGHT; i++)
-            for (int j = 0; j < this.LABYRINTH_WIDTH; j++){
+        for (int i = 0; i < LABYRINTH_HEIGHT; i++)
+            for (int j = 0; j < LABYRINTH_WIDTH; j++){
                 if (this.getSectors()[j][i].getSectorType() == SectorType.EMPTY) {
                     count_way = 0;
                     if (i - 1 >= 0 && this.getSectors()[j][i-1].getSectorType() == SectorType.EMPTY)                count_way++;

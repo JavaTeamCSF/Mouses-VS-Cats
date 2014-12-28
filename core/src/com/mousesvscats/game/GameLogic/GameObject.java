@@ -6,21 +6,21 @@ import com.badlogic.gdx.graphics.Texture;
  * Created by Алексей on 16.12.2014.
  */
 public class GameObject {
-    public static final int Size = 16;//размер текструки
-    protected int x,y;
+    public static final int SIZE = 14;//размер текструки
+    protected float x, y; //координаты
     protected boolean accessible; // можно ли пройти через объект
 
-    public void setX(int x) {
+    public void setX(float x) {
         this.x = x;
     }
-    public void setY(int y) {
+    public void setY(float y) {
         this.y = y;
     }
 
-    public int getX() {
+    public float getX() {
         return this.x;
     }
-    public int getY() {
+    public float getY() {
         return this.y;
     }
 
